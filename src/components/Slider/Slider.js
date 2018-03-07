@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Swipe from 'react-easy-swipe';
 
 import Slide from './Slide';
 import RightArrow from '../RightArrow/RightArrow';
@@ -35,9 +36,11 @@ export default class Slider extends Component {
 
         return (
             <div className="slider">
-             {teamMembers[this.props.sliderNumber]}
-            <LeftArrow className="left-arrow" prevSlide={this.prevSlide} />
-            <RightArrow className="right-arrow" nextSlide={this.nextSlide} />
+                <Swipe className="slide" onSwipeLeft={this.nextSlide} onSwipeRight={this.prevSlide}>
+                    {teamMembers[this.props.sliderNumber]}
+                </Swipe>
+                <LeftArrow className="left-arrow" prevSlide={this.prevSlide} />
+                <RightArrow className="right-arrow" nextSlide={this.nextSlide} />
                 
             </div>
         )
