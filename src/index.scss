@@ -1,0 +1,18 @@
+@import "~normalize.css";
+@import './assets/styles/bootstrap';
+
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {box-sizing: inherit;}
+
+.grid-container--primary {
+    background-color: $brand-primary;
+}
+
+.content-container {
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto 0;
+}

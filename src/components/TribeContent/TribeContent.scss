@@ -1,0 +1,47 @@
+@import '../../assets/styles/bootstrap';
+
+.tribe-grid {
+    display: flex;
+    margin-top: 50px;
+    padding-bottom: 50px;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    justify-content: space-between;
+
+    @include media-query(md) {
+        justify-content: unset;
+    }
+}
+
+.tribe-photos {
+    max-width: 960px !important;
+}
+
+.tribe-image {
+    display: none;
+    padding-left: 50px;
+
+    @include media-query(sm) {
+        display: inline-block;
+    }
+}
+
+.left-cloud-container {
+    width: 100%;
+}
+
+.left-cloud {
+    display: none;
+
+    @include media-query(xxlg) {
+        position: absolute;
+        left: 0;
+        margin-top: -400px;
+        display: block;
+    }
+
+    @include media-query(xs) {
+        display: none;
+    }
+}

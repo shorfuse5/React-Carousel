@@ -1,0 +1,157 @@
+$typography-size: (
+    'display1': 9.5rem,
+    'headline': 4.2rem,
+    'title': 2.4rem,
+    'subheading': 1.6rem,
+    'body': 1.4rem,
+    'caption': 1.2rem,
+    'button': 1.4rem
+)!default;
+
+$typography-light-theme: (
+    'primary': rgba(0,0,0,0.87),
+    'secondary': rgba(0,0,0,0.54),
+    'hint': rgba(0,0,0,0.38),
+    'divider': rgba(0,0,0,0.12)
+)!default;
+
+$typography-dark-theme: (
+    'primary': rgba(255,255,255,1),
+    'secondary': rgba(255,255,255,.80),
+    'hint': rgba(255,255,255,.50),
+    'divider': rgba(255,255,255,0.12),
+)!default;
+
+$typography-line-height: (
+    'display1': 9.5rem,
+    'headline': 4.2rem,
+    'title': 3.2rem,
+    'subheading': 2rem,
+    'body': 2rem,
+    'body-bold': 2.4rem,
+    'caption': 2rem,
+    'button': 2rem
+)!default;
+
+@function get-typography-theme($theme, $type) {
+    @if $theme == 'dark' {
+        @return map-get($typography-dark-theme, $type);
+    } @else if $theme == 'light' {
+        @return map-get($typography-light-theme, $type);
+    } @else {
+        @return $theme;
+    }
+}
+
+$divider-light: get-typography-theme('light', 'divider');
+$divider-dark: get-typography-theme('dark', 'divider');
+
+%typography-base {
+    display: block;
+    margin: 0;
+}
+
+@mixin display1($theme: 'light') {
+    @extend %typography-base;
+    font-size: map-get($typography-size, 'display1');
+    color: get-typography-theme($theme, 'primary');
+    line-height: map-get($typography-line-height, 'display1');
+    font-weight: 400;
+}
+
+@mixin headline($theme: 'light') {
+    @extend %typography-base;
+    font-size: map-get($typography-size, 'headline');
+    color: get-typography-theme($theme, 'primary');
+    line-height: map-get($typography-line-height, 'headline');
+    font-weight: 400;
+}
+
+@mixin title($theme: 'light') {
+    @extend %typography-base;
+    font-size: map-get($typography-size, 'title');
+    color: get-typography-theme($theme, 'primary');
+    font-weight: 500;
+    line-height: map-get($typography-line-height, 'title');
+}
+
+@mixin subheading($theme: 'light') {
+    @extend %typography-base;
+
+    font-size: map-get($typography-size, 'subheading');
+    color: get-typography-theme($theme, 'primary');
+    font-weight: 500;
+    line-height: map-get($typography-line-height, 'subheading');
+    padding: 10px 0;
+}
+
+@mixin body($theme: 'light') {
+    @extend %typography-base;
+
+    font-size: map-get($typography-size, 'body');
+    color: get-typography-theme($theme, 'secondary');
+    line-height: map-get($typography-line-height, 'body');
+    font-weight: 400;
+}
+
+@mixin body-bold($theme: 'light') {
+    @extend %typography-base;
+
+    font-size: map-get($typography-size, 'body');
+    color: get-typography-theme($theme, 'secondary');
+    line-height: map-get($typography-line-height, 'body-bold');
+    font-weight: 700;
+}
+
+@mixin caption($theme: 'light') {
+    @extend %typography-base;
+
+    font-size: map-get($typography-size, 'caption');
+    color: get-typography-theme($theme, 'hint');
+    line-height: map-get($typography-line-height, 'caption');
+    font-weight: 400;
+}
+
+@mixin button($theme: 'light') {
+    font-size: map-get($typography-size, 'button');
+    color: get-typography-theme($theme, 'primary');
+    line-height: map-get($typography-line-height, 'button');
+    font-weight: 500;
+}
+
+.text-highlight {
+    color: $brand-primary;
+}
+
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif!important;
+    font-size: 1.4rem;
+    @include body();
+}
+
+html, body {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+    min-height: 100%;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.display1 { @include display1(); }
+.headline { @include headline(); }
+.title { @include title(); }
+.subheading { @include subheading(); }
+.caption { @include caption(); }
+.body { @include body(); }
+.body-bold { @include body-bold(); }
+
+.headline + .title {
+    margin-top:10px;
+}

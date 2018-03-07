@@ -1,0 +1,553 @@
+
+$breakpoints: (
+    'xs' 'screen and (max-width: 575px)',
+    'sm' 'screen and (min-width: 576px)',
+    'md' 'screen and (min-width: 768px)',
+    'lg' 'screen and (min-width: 992px)',
+    'xlg' 'screen and (min-width: 1200px)',
+    'xxlg' 'screen and (min-width: 1500px)'
+) !default;
+
+$grid-gutter: 24px;
+$container-max-width: 1440px;
+
+$responsive: true !default;
+
+$offset: true !default;
+
+/**
+ * Would you like Sass silent classes, or regular CSS classes?
+ */
+$use-silent-classes: false !default;
+
+/**
+ * Define which namespaced breakpoints you would like to generate for each of
+ * widths, push and pull. This is handy if you only need pull on, say, desk, or
+ * you only need a new width breakpoint at mobile sizes. It allows you to only
+ * compile as much CSS as you need. All are turned on by default, but you can
+ * add and remove breakpoints at will.
+ *
+ * Push and pull shall only be used if `$push` and/or `$pull` and `$responsive`
+ * have been set to `true`.
+ */
+$breakpoint-has-widths: ('xs', 'sm', 'md', 'lg', 'xlg', 'xxlg') !default;
+$breakpoint-has-offset: ('xs', 'sm', 'md', 'lg', 'xlg', 'xxlg') !default;
+
+$class-type: unquote('.');
+
+@if $use-silent-classes == true {
+    $class-type: unquote('%');
+}
+
+/**
+ * Helpers / mixins
+ */
+@mixin media-query($mq) {
+    $breakpoint-found: false;
+
+    // Loop through the list of breakpoints we've provided in our settings file.
+    @each $breakpoint in $breakpoints {
+
+        $alias: nth($breakpoint, 1);
+        $condition: nth($breakpoint, 2);
+
+        @if $mq == $alias and $condition {
+            $breakpoint-found: true;
+
+            @media #{$condition} {
+                @content;
+            }
+        }
+    }
+
+    @if $breakpoint-found == false {
+        @warn "Oops! Breakpoint #{$mq} does not exist."
+    }
+}
+
+/*------------------------------------*\
+    $GRID SETUP
+\*------------------------------------*/
+
+#{$class-type}grid-container,
+#{$class-type}grid-container-fluid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: $grid-gutter / 2;
+    padding-right: $grid-gutter / 2;
+}
+
+#{$class-type}grid {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: $container-max-width;
+    margin-left: ($grid-gutter / -2);
+    margin-right: ($grid-gutter / -2);
+}
+
+#{$class-type}grid__item {
+    box-sizing: border-box;
+    flex: 1 0 auto;
+    padding-left: $grid-gutter / 2;
+    padding-right: $grid-gutter / 2;
+    max-width: 100%;
+}
+
+@mixin utilities($namespace: '') {
+    /**
+     * Align the entire grid. (`.grid--left` `grid--right` `grid--center`) Extends `.grid`.
+     */
+
+    #{$class-type}#{$namespace}grid--left {
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    #{$class-type}#{$namespace}grid--right {
+        justify-content: flex-end;
+        text-align: end;
+    }
+
+    #{$class-type}#{$namespace}grid--center {
+        justify-content: center;
+        text-align: center;
+    }
+
+    #{$class-type}#{$namespace}grid--no-spacing {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        & > .grid__item {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+    }
+
+    #{$class-type}#{$namespace}grid--pad-bottom {
+        & > .grid__item {
+            padding-bottom: $grid-gutter
+        }
+    }
+
+    /**
+     * Align grid cells vertically (`.grid--top` `.grid--middle` `.grid--bottom`). Extends `.grid`.
+     */
+
+    #{$class-type}#{$namespace}grid--top {
+        align-items: flex-start;
+    }
+
+    #{$class-type}#{$namespace}grid--middle {
+        align-items: center;
+    }
+
+    #{$class-type}#{$namespace}grid--bottom {
+        align-items: flex-end;
+    }
+}
+
+/*------------------------------------*\
+    $WIDTHS
+\*------------------------------------*/
+/**
+ * Create our width classes, prefixed by the specified namespace.
+ */
+@mixin device-type($namespace: '') {
+
+    /**
+     * Whole
+     */
+    #{$class-type}#{$namespace}one-whole {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    /**
+     * Halves
+     */
+    #{$class-type}#{$namespace}one-half {
+        flex-basis: 50%;
+        max-width: 50%;
+    }
+
+    /**
+     * Thirds
+     */
+    #{$class-type}#{$namespace}one-third {
+        flex-basis: 33.333%;
+        max-width: 33.333%;
+    }
+    #{$class-type}#{$namespace}two-thirds {
+        flex-basis: 66.666%;
+        max-width: 66.666%;
+    }
+
+    /**
+     * Quarters
+     */
+    #{$class-type}#{$namespace}one-quarter {
+        flex-basis: 25%;
+        max-width: 25%;
+    }
+    #{$class-type}#{$namespace}two-quarters {
+        @extend #{$class-type}#{$namespace}one-half;
+    }
+    #{$class-type}#{$namespace}three-quarters {
+        flex-basis: 75%;
+        max-width: 75%;
+    }
+
+    /**
+     * Fifths
+     */
+    #{$class-type}#{$namespace}one-fifth {
+        flex-basis: 20%;
+        max-width: 20%;
+    }
+    #{$class-type}#{$namespace}two-fifths {
+        flex-basis: 40%;
+        max-width: 40%;
+    }
+    #{$class-type}#{$namespace}three-fifths {
+        flex-basis: 60%;
+        max-width: 60%;
+    }
+    #{$class-type}#{$namespace}four-fifths {
+        flex-basis: 80%;
+        max-width: 80%;
+    }
+
+    /**
+     * Sixths
+     */
+    #{$class-type}#{$namespace}one-sixth {
+        flex-basis: 16.666%;
+        max-width: 16.666%;
+    }
+    #{$class-type}#{$namespace}two-sixths {
+        @extend #{$class-type}#{$namespace}one-third;
+    }
+    #{$class-type}#{$namespace}three-sixths {
+        @extend #{$class-type}#{$namespace}one-half;
+    }
+    #{$class-type}#{$namespace}four-sixths {
+        @extend #{$class-type}#{$namespace}two-thirds;
+    }
+    #{$class-type}#{$namespace}five-sixths {
+        flex-basis: 83.333%;
+        max-width: 83.333%;
+    }
+
+    /**
+     * Eighths
+     */
+    #{$class-type}#{$namespace}one-eighth {
+        flex-basis: 12.5%;
+        max-width: 12.5%;
+    }
+    #{$class-type}#{$namespace}two-eighths {
+        @extend #{$class-type}#{$namespace}one-quarter;
+    }
+    #{$class-type}#{$namespace}three-eighths {
+        flex-basis: 37.5%;
+        max-width: 37.5%;
+    }
+    #{$class-type}#{$namespace}four-eighths {
+        @extend #{$class-type}#{$namespace}one-half;
+    }
+    #{$class-type}#{$namespace}five-eighths {
+        flex-basis: 62.5%;
+        max-width: 62.5%;
+    }
+    #{$class-type}#{$namespace}six-eighths {
+        @extend #{$class-type}#{$namespace}three-quarters;
+    }
+    #{$class-type}#{$namespace}seven-eighths {
+        flex-basis: 87.5%;
+        max-width: 87.5%;
+    }
+
+    /**
+     * Tenths
+     */
+    #{$class-type}#{$namespace}one-tenth {
+        flex-basis: 10%;
+        max-width: 10%;
+    }
+    #{$class-type}#{$namespace}two-tenths {
+        @extend #{$class-type}#{$namespace}one-fifth;
+    }
+    #{$class-type}#{$namespace}three-tenths {
+        flex-basis: 30%;
+        max-width: 30%;
+    }
+    #{$class-type}#{$namespace}four-tenths {
+        @extend #{$class-type}#{$namespace}two-fifths;
+    }
+    #{$class-type}#{$namespace}five-tenths {
+        @extend #{$class-type}#{$namespace}one-half;
+    }
+    #{$class-type}#{$namespace}six-tenths {
+        @extend #{$class-type}#{$namespace}three-fifths;
+    }
+    #{$class-type}#{$namespace}seven-tenths {
+        flex-basis: 70%;
+        max-width: 70%;
+    }
+    #{$class-type}#{$namespace}eight-tenths {
+        @extend #{$class-type}#{$namespace}four-fifths;
+    }
+    #{$class-type}#{$namespace}nine-tenths {
+        flex-basis: 90%;
+        max-width: 90%;
+    }
+
+    /**
+     * Twelfths
+     */
+    #{$class-type}#{$namespace}one-twelfth {
+        flex-basis: 8.333%;
+        max-width: 8.33%;
+    }
+    #{$class-type}#{$namespace}two-twelfths {
+        @extend #{$class-type}#{$namespace}one-sixth;
+    }
+    #{$class-type}#{$namespace}three-twelfths {
+        @extend #{$class-type}#{$namespace}one-quarter;
+    }
+    #{$class-type}#{$namespace}four-twelfths {
+        @extend #{$class-type}#{$namespace}one-third;
+    }
+    #{$class-type}#{$namespace}five-twelfths {
+        flex-basis: 41.666%;
+        max-width: 41.666%;
+    }
+    #{$class-type}#{$namespace}six-twelfths {
+        @extend #{$class-type}#{$namespace}one-half;
+    }
+    #{$class-type}#{$namespace}seven-twelfths {
+        flex-basis: 58.333%;
+        max-width: 58.333%;
+    }
+    #{$class-type}#{$namespace}eight-twelfths {
+        @extend #{$class-type}#{$namespace}two-thirds;
+    }
+    #{$class-type}#{$namespace}nine-twelfths {
+        @extend #{$class-type}#{$namespace}three-quarters;
+    }
+    #{$class-type}#{$namespace}ten-twelfths {
+        @extend #{$class-type}#{$namespace}five-sixths;
+    }
+    #{$class-type}#{$namespace}eleven-twelfths {
+        flex-basis: 91.666%;
+        max-width: 91.666%;
+    }
+}
+
+/**
+ * Our regular, non-responsive width classes.
+ */
+@include device-type();
+@include utilities();
+
+/**
+ * Our responsive classes, if we have enabled them.
+ */
+@if $responsive == true {
+
+    @each $name in $breakpoint-has-widths {
+        @include media-query($name) {
+            @include device-type('#{$name}--');
+            @include utilities('#{$name}--');
+        }
+    }
+}
+
+/*------------------------------------*\
+    $OFFSET
+\*------------------------------------*/
+/**
+ * Offset classes, to move grid items over to the right by certain amounts.
+ */
+@mixin offset-setup($namespace: '') {
+
+    /**
+     * Whole
+     */
+    #{$class-type}offset--#{$namespace}one-whole {
+        margin-left: 100%
+    }
+
+    /**
+     * Halves
+     */
+    #{$class-type}offset--#{$namespace}one-half {
+        margin-left: 50%;
+    }
+
+    /**
+     * Thirds
+     */
+    #{$class-type}offset--#{$namespace}one-third {
+        margin-left: 33.333%;
+    }
+    #{$class-type}offset--#{$namespace}two-thirds {
+        margin-left: 66.666%;
+    }
+
+    /**
+     * Quarters
+     */
+    #{$class-type}offset--#{$namespace}one-quarter {
+        margin-left: 25%;
+    }
+    #{$class-type}offset--#{$namespace}two-quarters {
+        @extend #{$class-type}offset--#{$namespace}one-half;
+    }
+    #{$class-type}offset--#{$namespace}three-quarters {
+        margin-left: 75%;
+    }
+
+    /**
+     * Fifths
+     */
+    #{$class-type}offset--#{$namespace}one-fifth {
+        margin-left: 20%;
+    }
+    #{$class-type}offset--#{$namespace}two-fifths {
+        margin-left: 40%;
+    }
+    #{$class-type}offset--#{$namespace}three-fifths {
+        margin-left: 60%;
+    }
+    #{$class-type}offset--#{$namespace}four-fifths {
+        margin-left: 80%;
+    }
+
+    /**
+     * Sixths
+     */
+    #{$class-type}offset--#{$namespace}one-sixth {
+        margin-left: 16.666%;
+    }
+    #{$class-type}offset--#{$namespace}two-sixths {
+        @extend #{$class-type}offset--#{$namespace}one-third;
+    }
+    #{$class-type}offset--#{$namespace}three-sixths {
+        @extend #{$class-type}offset--#{$namespace}one-half;
+    }
+    #{$class-type}offset--#{$namespace}four-sixths {
+        @extend #{$class-type}offset--#{$namespace}two-thirds;
+    }
+    #{$class-type}offset--#{$namespace}five-sixths {
+        margin-left: 83.333%;
+    }
+
+    /**
+     * Eighths
+     */
+    #{$class-type}offset--#{$namespace}one-eighth {
+        margin-left: 12.5%;
+    }
+    #{$class-type}offset--#{$namespace}two-eighths {
+        @extend #{$class-type}offset--#{$namespace}one-quarter;
+    }
+    #{$class-type}offset--#{$namespace}three-eighths {
+        margin-left: 37.5%;
+    }
+    #{$class-type}offset--#{$namespace}four-eighths {
+        @extend #{$class-type}offset--#{$namespace}one-half;
+    }
+    #{$class-type}offset--#{$namespace}five-eighths {
+        margin-left: 62.5%;
+    }
+    #{$class-type}offset--#{$namespace}six-eighths {
+        @extend #{$class-type}offset--#{$namespace}three-quarters;
+    }
+    #{$class-type}offset--#{$namespace}seven-eighths {
+        margin-left: 87.5%;
+    }
+
+    /**
+     * Tenths
+     */
+    #{$class-type}offset--#{$namespace}one-tenth {
+        margin-left: 10%;
+    }
+    #{$class-type}offset--#{$namespace}two-tenths {
+        @extend #{$class-type}offset--#{$namespace}one-fifth;
+    }
+    #{$class-type}offset--#{$namespace}three-tenths {
+        margin-left: 30%;
+    }
+    #{$class-type}offset--#{$namespace}four-tenths {
+        @extend #{$class-type}offset--#{$namespace}two-fifths;
+    }
+    #{$class-type}offset--#{$namespace}five-tenths {
+        @extend #{$class-type}offset--#{$namespace}one-half;
+    }
+    #{$class-type}offset--#{$namespace}six-tenths {
+        @extend #{$class-type}offset--#{$namespace}three-fifths;
+    }
+    #{$class-type}offset--#{$namespace}seven-tenths {
+        margin-left: 70%;
+    }
+    #{$class-type}offset--#{$namespace}eight-tenths {
+        @extend #{$class-type}offset--#{$namespace}four-fifths;
+    }
+    #{$class-type}offset--#{$namespace}nine-tenths {
+        margin-left: 90%;
+    }
+
+    /**
+     * Twelfths
+     */
+    #{$class-type}offset--#{$namespace}one-twelfth {
+        margin-left: 8.333%;
+    }
+    #{$class-type}offset--#{$namespace}two-twelfths {
+        @extend #{$class-type}offset--#{$namespace}one-sixth;
+    }
+    #{$class-type}offset--#{$namespace}three-twelfths {
+        @extend #{$class-type}offset--#{$namespace}one-quarter;
+    }
+    #{$class-type}offset--#{$namespace}four-twelfths {
+        @extend #{$class-type}offset--#{$namespace}one-third;
+    }
+    #{$class-type}offset--#{$namespace}five-twelfths {
+        margin-left: 41.666%;
+    }
+    #{$class-type}offset--#{$namespace}six-twelfths {
+        @extend #{$class-type}offset--#{$namespace}one-half;
+    }
+    #{$class-type}offset--#{$namespace}seven-twelfths {
+        margin-left: 58.333%;
+    }
+    #{$class-type}offset--#{$namespace}eight-twelfths {
+        @extend #{$class-type}offset--#{$namespace}two-thirds;
+    }
+    #{$class-type}offset--#{$namespace}nine-twelfths {
+        @extend #{$class-type}offset--#{$namespace}three-quarters;
+    }
+    #{$class-type}offset--#{$namespace}ten-twelfths {
+        @extend #{$class-type}offset--#{$namespace}five-sixths;
+    }
+    #{$class-type}offset--#{$namespace}eleven-twelfths {
+        margin-left: 91.666%;
+    }
+}
+
+@if $offset == true {
+    @include offset-setup();
+
+    @if $responsive == true {
+        @each $name in $breakpoint-has-offset {
+            @include media-query($name) {
+                @include offset-setup('#{$name}--');
+            }
+        }
+    }
+}

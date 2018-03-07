@@ -1,0 +1,80 @@
+@import '../../assets/styles/bootstrap';
+
+
+.slider {
+    display: flex;
+    flex-flow: row wrap;
+
+    @include media-query(xlg) {
+        flex: 2 0px;
+    }
+}
+
+.slide {
+    flex: 15 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+
+    @include media-query(xxlg) {
+        max-width: 960px;
+    }
+    
+    -webkit-animation: fadein 2s;
+    -moz-animation: fadein 2s;
+    -ms-animation: fadein 2s;
+    -o-animation: fadein 2s;
+    animation: fadein 2s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.prev-tribe-conatiner, .next-tribe-conatiner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    @include media-query(xs){
+        img {
+            width: 80%;
+        }
+    }
+}
+
+.aside {
+    flex: 1;
+    margin: 10px 0;
+}
+
+@include media-query(xxlg) {
+    .slide { flex: 15 0px; }
+    .prev-tribe-conatiner { order: 1; } 
+    .slide { order: 2; }
+    .next-tribe-conatiner { order: 3; }
+    .aside { flex: 1 auto; }
+}
+

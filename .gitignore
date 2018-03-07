@@ -1,0 +1,21 @@
+gc-key-file.json
+
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+/build
+*.css
+
+# misc
+.DS_Store
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.vscode/chrome
+.idea

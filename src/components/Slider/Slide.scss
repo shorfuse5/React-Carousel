@@ -1,0 +1,74 @@
+@import '../../assets/styles/bootstrap';
+
+.individual-member-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    max-width: 960px;
+}
+
+.member-title-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.tribe-svg {
+    padding-right: 30px;
+}
+
+.member-description-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+
+    @include media-query(xxlg) {
+        align-items: flex-end;
+    }
+
+    @include media-query(sm) {
+        flex-direction: row;
+    }
+
+    .member-photo {
+        width: 250px;
+        height: auto;
+    }
+
+    .description {
+        display: flex;
+        flex-direction: column;
+
+        p {
+            padding-left: 0px;
+
+            @include media-query(sm) {
+                padding-left: 20px;
+            }
+        }
+        
+
+        blockquote {
+            margin: 40px;
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+
+            @include media-query(md) {
+                flex-direction: row;
+            }
+
+            .factsListItem {
+                color: red;
+                list-style-position: outside;
+                margin-right: 40px
+            }
+        }
+    }
+}
